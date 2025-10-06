@@ -1,5 +1,6 @@
-// Service Details Data
-const serviceDetails = {
+import { ServiceDetails } from '../types';
+
+export const serviceDetails: ServiceDetails = {
   'steel-detailing': {
     title: 'Steel Detailing Services',
     description: 'Comprehensive steel detailing solutions for complex structural projects',
@@ -35,6 +36,12 @@ const serviceDetails = {
         'Material Lists and Schedules',
         'Connection Details and Specifications',
         'Quality Control Reports'
+      ],
+      'Available Hours': [
+        'Monday - Friday: 8:00 AM - 6:00 PM',
+        'Saturday: 9:00 AM - 2:00 PM',
+        'Sunday: Closed',
+        'Emergency Support: 24/7 Available'
       ]
     },
     cta: {
@@ -78,6 +85,12 @@ const serviceDetails = {
         'Seismic Retrofitting',
         'Foundation Systems',
         'Special Structures'
+      ],
+      'Available Hours': [
+        'Monday - Friday: 8:00 AM - 6:00 PM',
+        'Saturday: 9:00 AM - 2:00 PM',
+        'Sunday: Closed',
+        'Consultation: By Appointment'
       ]
     },
     cta: {
@@ -121,6 +134,12 @@ const serviceDetails = {
         'Enhanced Project Delivery',
         'Standardized Processes',
         'Scalable Solutions'
+      ],
+      'Available Hours': [
+        'Monday - Friday: 8:00 AM - 6:00 PM',
+        'Saturday: 10:00 AM - 3:00 PM',
+        'Sunday: Closed',
+        'Support: Available Online 24/7'
       ]
     },
     cta: {
@@ -164,6 +183,12 @@ const serviceDetails = {
         'Risk Registers and Mitigation Plans',
         'Change Management Procedures',
         'Project Documentation'
+      ],
+      'Available Hours': [
+        'Monday - Friday: 7:00 AM - 7:00 PM',
+        'Saturday: 9:00 AM - 4:00 PM',
+        'Sunday: Emergency Only',
+        'Project Updates: Daily via Email'
       ]
     },
     cta: {
@@ -207,6 +232,12 @@ const serviceDetails = {
         'Proper Dimensioning Practices',
         'Title Block Standardization',
         'File Organization Protocols'
+      ],
+      'Available Hours': [
+        'Monday - Friday: 8:00 AM - 6:00 PM',
+        'Saturday: 9:00 AM - 2:00 PM',
+        'Sunday: Closed',
+        'Rush Services: Available on Request'
       ]
     },
     cta: {
@@ -250,6 +281,12 @@ const serviceDetails = {
         'Implementation Planning',
         'Progress Monitoring',
         'Final Recommendations'
+      ],
+      'Available Hours': [
+        'Monday - Friday: 8:00 AM - 6:00 PM',
+        'Saturday: By Appointment Only',
+        'Sunday: Closed',
+        'Video Consultations: Available Globally'
       ]
     },
     cta: {
@@ -259,102 +296,3 @@ const serviceDetails = {
     }
   }
 };
-
-// Service Modal Manager
-class ServiceModalManager {
-  constructor() {
-    this.modal = document.getElementById('service-modal');
-    this.closeBtn = document.getElementById('close-service-modal');
-    this.content = document.getElementById('service-detail-content');
-    this.init();
-  }
-
-  init() {
-    this.bindEvents();
-  }
-
-  bindEvents() {
-    // Close modal events
-    this.closeBtn.addEventListener('click', () => {
-      this.closeModal();
-    });
-
-    this.modal.addEventListener('click', (e) => {
-      if (e.target === this.modal) {
-        this.closeModal();
-      }
-    });
-
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape' && this.modal.classList.contains('active')) {
-        this.closeModal();
-      }
-    });
-
-    // Service card click events
-    document.querySelectorAll('.learn-more-btn').forEach(btn => {
-      btn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        const serviceCard = btn.closest('.service-card');
-        const serviceId = serviceCard.dataset.service;
-        this.openModal(serviceId);
-      });
-    });
-
-    document.querySelectorAll('.service-card').forEach(card => {
-      card.addEventListener('click', () => {
-        const serviceId = card.dataset.service;
-        this.openModal(serviceId);
-      });
-    });
-  }
-
-  openModal(serviceId) {
-    const service = serviceDetails[serviceId];
-    if (!service) return;
-
-    this.content.innerHTML = this.generateServiceContent(service);
-    this.modal.classList.add('active');
-    document.body.style.overflow = 'hidden';
-  }
-
-  closeModal() {
-    this.modal.classList.remove('active');
-    document.body.style.overflow = '';
-  }
-
-  generateServiceContent(service) {
-    const sectionsHtml = Object.entries(service.sections).map(([title, items]) => `
-      <div class="service-detail-section">
-        <h3><i class="fas fa-cog"></i> ${title}</h3>
-        <ul class="service-detail-list">
-          ${items.map(item => `<li>${item}</li>`).join('')}
-        </ul>
-      </div>
-    `).join('');
-
-    return `
-      <div class="service-detail-header">
-        <h2>${service.title}</h2>
-        <p>${service.description}</p>
-      </div>
-      
-      <div class="service-detail-grid">
-        ${sectionsHtml}
-      </div>
-      
-      <div class="service-cta">
-        <h3>${service.cta.title}</h3>
-        <p>${service.cta.description}</p>
-        <a href="#contact" class="btn btn-primary" onclick="document.getElementById('service-modal').classList.remove('active'); document.body.style.overflow = '';">
-          ${service.cta.buttonText}
-        </a>
-      </div>
-    `;
-  }
-}
-
-// Initialize Service Modal Manager
-document.addEventListener('DOMContentLoaded', () => {
-  new ServiceModalManager();
-});
