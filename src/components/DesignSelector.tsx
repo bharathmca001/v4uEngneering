@@ -18,9 +18,9 @@ interface DesignSelectorProps {
 const designOptions: DesignOption[] = [
   {
     id: 'design1',
-    name: 'Professional',
-    description: 'Clean and modern business design',
-    preview: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)'
+    name: 'Original',
+    description: 'Your original design',
+    preview: 'linear-gradient(135deg, #3b82f6 0%, #1e40af 100%)'
   },
   {
     id: 'design2',

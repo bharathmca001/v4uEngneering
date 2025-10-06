@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Design1 } from './designs/Design1';
+import { OriginalDesign } from './designs/OriginalDesign';
 import { Design2 } from './designs/Design2';
 import { Design3 } from './designs/Design3';
 import { DesignVariant } from './components/DesignSelector';
@@ -24,7 +24,7 @@ function App() {
     case 'design3':
       return <Design3 onDesignChange={handleDesignChange} />;
     default:
-      return <Design1 onDesignChange={handleDesignChange} />;
+      return <OriginalDesign onDesignChange={handleDesignChange} />;
   }
 }
 
