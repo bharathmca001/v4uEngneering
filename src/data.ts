@@ -1,5 +1,35 @@
-// Service Details Data
-const serviceDetails = {
+export interface ServiceDetail {
+  title: string;
+  description: string;
+  sections: Record<string, string[]>;
+  cta: {
+    title: string;
+    description: string;
+    buttonText: string;
+  };
+}
+
+export interface ServiceData {
+  id: string;
+  icon: string;
+  title: string;
+  description: string;
+  features: string[];
+}
+
+export interface ProjectData {
+  title: string;
+  description: string;
+  image: string;
+  tags: string[];
+}
+
+export interface StatData {
+  value: string;
+  title: string;
+}
+
+export const serviceDetails: Record<string, ServiceDetail> = {
   'steel-detailing': {
     title: 'Steel Detailing Services',
     description: 'Comprehensive steel detailing solutions for complex structural projects',
@@ -260,101 +290,75 @@ const serviceDetails = {
   }
 };
 
-// Service Modal Manager
-class ServiceModalManager {
-  constructor() {
-    this.modal = document.getElementById('service-modal');
-    this.closeBtn = document.getElementById('close-service-modal');
-    this.content = document.getElementById('service-detail-content');
-    this.init();
+export const servicesData: ServiceData[] = [
+  {
+    id: 'steel-detailing',
+    icon: 'fas fa-building',
+    title: 'Steel Detailing',
+    description: 'Precise 3D modeling and detailed drawings for steel structures with comprehensive material lists and connection details.',
+    features: ['3D Modeling & Visualization', 'Connection Design', 'Material Optimization', 'Code Compliance']
+  },
+  {
+    id: 'structural-analysis',
+    icon: 'fas fa-calculator',
+    title: 'Structural Analysis',
+    description: 'Advanced structural analysis using state-of-the-art software to ensure safety and optimize design efficiency.',
+    features: ['Load Analysis', 'Seismic Design', 'Wind Load Assessment', 'Performance Optimization']
+  },
+  {
+    id: 'ai-solutions',
+    icon: 'fas fa-robot',
+    title: 'AI-Powered Solutions',
+    description: 'Leveraging artificial intelligence to enhance design processes and improve project efficiency and accuracy.',
+    features: ['Automated Detailing', 'Design Optimization', 'Quality Assurance', 'Process Automation']
+  },
+  {
+    id: 'project-management',
+    icon: 'fas fa-chart-line',
+    title: 'Project Management',
+    description: 'Complete project lifecycle management ensuring timely delivery and quality standards throughout execution.',
+    features: ['Timeline Management', 'Quality Control', 'Progress Tracking', 'Client Communication']
+  },
+  {
+    id: 'cad-services',
+    icon: 'fas fa-tools',
+    title: 'CAD Services',
+    description: 'Professional CAD drafting and design services using industry-leading software and best practices.',
+    features: ['2D Technical Drawings', '3D Modeling', 'Rendering & Visualization', 'Documentation']
+  },
+  {
+    id: 'consulting',
+    icon: 'fas fa-handshake',
+    title: 'Consulting',
+    description: 'Expert engineering consultation to guide your projects from concept to completion with professional insights.',
+    features: ['Technical Advisory', 'Code Review', 'Risk Assessment', 'Best Practices']
   }
+];
 
-  init() {
-    this.bindEvents();
+export const projectsData: ProjectData[] = [
+  {
+    title: 'Metro Commercial Tower',
+    description: 'Comprehensive steel detailing and structural analysis for a modern commercial complex.',
+    image: 'https://images.pexels.com/photos/2343468/pexels-photo-2343468.jpeg?auto=compress&cs=tinysrgb&w=800',
+    tags: ['Steel Detailing', 'CAD Design']
+  },
+  {
+    title: 'Manufacturing Plant Design',
+    description: 'Large-scale industrial facility with specialized steel framework and equipment foundations.',
+    image: 'https://images.pexels.com/photos/256297/pexels-photo-256297.jpeg?auto=compress&cs=tinysrgb&w=800',
+    tags: ['Industrial Design', 'Structural Analysis']
+  },
+  {
+    title: 'Highway Bridge Project',
+    description: 'Structural engineering and detailing for critical infrastructure development.',
+    image: 'https://images.pexels.com/photos/210126/pexels-photo-210126.jpeg?auto=compress&cs=tinysrgb&w=800',
+    tags: ['Bridge Design', 'Infrastructure']
   }
+];
 
-  bindEvents() {
-    // Close modal events
-    this.closeBtn.addEventListener('click', () => {
-      this.closeModal();
-    });
-
-    this.modal.addEventListener('click', (e) => {
-      if (e.target === this.modal) {
-        this.closeModal();
-      }
-    });
-
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape' && this.modal.classList.contains('active')) {
-        this.closeModal();
-      }
-    });
-
-    // Service card click events
-    document.querySelectorAll('.learn-more-btn').forEach(btn => {
-      btn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        const serviceCard = btn.closest('.service-card');
-        const serviceId = serviceCard.dataset.service;
-        this.openModal(serviceId);
-      });
-    });
-
-    document.querySelectorAll('.service-card').forEach(card => {
-      card.addEventListener('click', () => {
-        const serviceId = card.dataset.service;
-        this.openModal(serviceId);
-      });
-    });
-  }
-
-  openModal(serviceId) {
-    const service = serviceDetails[serviceId];
-    if (!service) return;
-
-    this.content.innerHTML = this.generateServiceContent(service);
-    this.modal.classList.add('active');
-    document.body.style.overflow = 'hidden';
-  }
-
-  closeModal() {
-    this.modal.classList.remove('active');
-    document.body.style.overflow = '';
-  }
-
-  generateServiceContent(service) {
-    const sectionsHtml = Object.entries(service.sections).map(([title, items]) => `
-      <div class="service-detail-section">
-        <h3><i class="fas fa-cog"></i> ${title}</h3>
-        <ul class="service-detail-list">
-          ${items.map(item => `<li>${item}</li>`).join('')}
-        </ul>
-      </div>
-    `).join('');
-
-    return `
-      <div class="service-detail-header">
-        <h2>${service.title}</h2>
-        <p>${service.description}</p>
-      </div>
-      
-      <div class="service-detail-grid">
-        ${sectionsHtml}
-      </div>
-      
-      <div class="service-cta">
-        <h3>${service.cta.title}</h3>
-        <p>${service.cta.description}</p>
-        <a href="#contact" class="btn btn-primary" onclick="document.getElementById('service-modal').classList.remove('active'); document.body.style.overflow = '';">
-          ${service.cta.buttonText}
-        </a>
-      </div>
-    `;
-  }
-}
-
-// Initialize Service Modal Manager
-document.addEventListener('DOMContentLoaded', () => {
-  new ServiceModalManager();
-});
+export const statsData: StatData[] = [
+  { value: '500+', title: 'Projects Completed' },
+  { value: '15+', title: 'Years Experience' },
+  { value: '50+', title: 'Expert Engineers' },
+  { value: '99%', title: 'Client Satisfaction' }
+];
